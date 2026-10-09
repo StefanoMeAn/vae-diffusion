@@ -1,0 +1,8 @@
+name: vae-diffusion
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+# Install PyTorch first, then requirements.txt, following README.md.
+# This keeps CPU/CUDA selection explicit rather than installing two builds.

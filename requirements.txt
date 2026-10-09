@@ -1,0 +1,14 @@
+# Install the matching CPU or CUDA PyTorch pair first (see README.md).
+torch==2.7.1
+torchvision==0.22.1
+numpy>=1.26,<3
+pandas>=2.2,<3
+scipy>=1.13,<2
+matplotlib>=3.8,<4
+seaborn>=0.13,<0.14
+scikit-learn>=1.5,<2
+tqdm>=4.66,<5
+jupyterlab>=4.2,<5
+ipykernel>=6.29,<7
+# These are dependency bounds, not a fully resolved lockfile.
+# Save pip freeze after verifying the environment locally.
