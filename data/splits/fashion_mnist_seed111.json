@@ -1,0 +1,58 @@
+{
+  "dataset": "fashion_mnist",
+  "seed": 111,
+  "split_method": "stratified sklearn train_test_split",
+  "validation_size": 10000,
+  "train_size": 50000,
+  "test_size": 10000,
+  "index_source": "torchvision dataset with train=True",
+  "test_source": "torchvision dataset with train=False",
+  "classes": [
+    "T-shirt/top",
+    "Trouser",
+    "Pullover",
+    "Dress",
+    "Coat",
+    "Sandal",
+    "Shirt",
+    "Sneaker",
+    "Bag",
+    "Ankle boot"
+  ],
+  "train_class_counts": [
+    5000,
+    5000,
+    5000,
+    5000,
+    5000,
+    5000,
+    5000,
+    5000,
+    5000,
+    5000
+  ],
+  "validation_class_counts": [
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000
+  ],
+  "test_class_counts": [
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000
+  ]
+}

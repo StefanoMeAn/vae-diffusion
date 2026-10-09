@@ -1,0 +1,58 @@
+{
+  "dataset": "mnist",
+  "seed": 111,
+  "split_method": "stratified sklearn train_test_split",
+  "validation_size": 10000,
+  "train_size": 50000,
+  "test_size": 10000,
+  "index_source": "torchvision dataset with train=True",
+  "test_source": "torchvision dataset with train=False",
+  "classes": [
+    "0 - zero",
+    "1 - one",
+    "2 - two",
+    "3 - three",
+    "4 - four",
+    "5 - five",
+    "6 - six",
+    "7 - seven",
+    "8 - eight",
+    "9 - nine"
+  ],
+  "train_class_counts": [
+    4936,
+    5618,
+    4965,
+    5109,
+    4868,
+    4517,
+    4932,
+    5221,
+    4876,
+    4958
+  ],
+  "validation_class_counts": [
+    987,
+    1124,
+    993,
+    1022,
+    974,
+    904,
+    986,
+    1044,
+    975,
+    991
+  ],
+  "test_class_counts": [
+    980,
+    1135,
+    1032,
+    1010,
+    982,
+    892,
+    958,
+    1028,
+    974,
+    1009
+  ]
+}
