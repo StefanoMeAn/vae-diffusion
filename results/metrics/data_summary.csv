@@ -1,0 +1,3 @@
+dataset,train,validation,test (metadata),image_shape,raw_dtype,seed
+mnist,50000,10000,10000,28 x 28,torch.uint8,111
+fashion_mnist,50000,10000,10000,28 x 28,torch.uint8,111

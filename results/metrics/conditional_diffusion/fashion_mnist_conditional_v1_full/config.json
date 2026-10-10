@@ -1,0 +1,12 @@
+{
+  "run_id": "fashion_mnist_conditional_v1_full",
+  "dataset": "fashion_mnist",
+  "seed": 111,
+  "timesteps": 300,
+  "base_channels": 32,
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "epochs": 30,
+  "drop_prob": 0.1,
+  "mode": "full"
+}

@@ -1,0 +1,5 @@
+{
+  "best_epoch": 30,
+  "best_val_loss": 0.039732567146420476,
+  "parameter_count": 267361
+}

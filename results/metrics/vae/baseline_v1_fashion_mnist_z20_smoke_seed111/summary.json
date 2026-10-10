@@ -1,0 +1,7 @@
+{
+  "best_epoch": 2,
+  "best_val_loss": 313.0878677368164,
+  "train_and_validation_seconds": 0.668904690999625,
+  "parameter_count": 866057,
+  "peak_allocated_MiB": 65.66259765625
+}

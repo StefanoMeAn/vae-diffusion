@@ -1,0 +1,21 @@
+{
+  "run_id": "baseline_v1_mnist_z2_full_seed111",
+  "dataset": "mnist",
+  "latent_dim": 2,
+  "hidden_dim": 128,
+  "epochs": 30,
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "beta": 1.0,
+  "seed": 111,
+  "smoke_test": false,
+  "train_size": 50000,
+  "val_size": 10000,
+  "num_workers": 0,
+  "split_sha256": "42b63a009cff96d0d168004789d942ec886792ef07fe931050234eceedaaa001",
+  "code_sha256": "40ddd346a4b3c66fc8ff20309bc1f4007b35ab9caa49a7b2bb8e17972104926c",
+  "python_version": "3.11.17",
+  "torch_version": "2.7.1+cu118",
+  "device": "cuda",
+  "device_name": "NVIDIA GeForce RTX 3050 Laptop GPU"
+}
