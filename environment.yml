@@ -4,5 +4,5 @@ channels:
 dependencies:
   - python=3.11
   - pip
-# Install PyTorch first, then requirements.txt, following README.md.
-# This keeps CPU/CUDA selection explicit rather than installing two builds.
+# After activating the environment, install Python packages from requirements.txt.
+# See README.md for selecting a hardware-specific PyTorch build.
