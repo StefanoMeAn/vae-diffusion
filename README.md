@@ -14,12 +14,12 @@ The models and training utilities are implemented in PyTorch, with each experime
 
 Two standard image datasets are used:
 
-| Dataset | Images | Classes | Resolution |
+| Dataset | Content | Classes | Resolution |
 |---|---|---:|---|
 | MNIST | Handwritten digits | 10 | 28 × 28, grayscale |
 | Fashion-MNIST | Clothing and footwear | 10 | 28 × 28, grayscale |
 
-The same dataset preparation procedure and train/validation splits are used across experiments. Downloaded data are not included in the repository; `scripts/prepare_data.py` prepares the datasets locally.
+The same preparation procedure and train/validation splits are used across experiments. The repository includes saved split information; `scripts/prepare_data.py` downloads missing dataset files and verifies or creates local splits.
 
 ## Methodology
 
@@ -115,23 +115,22 @@ vae-diffusion/
 └── README.md
 ```
 
-Model checkpoints and downloaded datasets are excluded from Git. Experiment figures and evaluation metrics are retained.
+Model checkpoints are excluded from Git. The repository includes raw dataset files, saved split information, experiment figures, and evaluation metrics.
 
 ## Installation
 
-Clone the repository and create the Conda environment:
+Clone the repository, create the Conda environment, and install the Python packages from `requirements.txt`:
 
 ```bash
 git clone https://github.com/StefanoMeAn/vae-diffusion.git
 cd vae-diffusion
 conda env create -f environment.yml
-```
-
-Activate the environment defined in `environment.yml`, then verify the installation:
-
-```bash
+conda activate vae-diffusion
+python -m pip install -r requirements.txt
 python scripts/check_environment.py
 ```
+
+The requirements pin PyTorch and torchvision to compatible versions. For a particular CPU-only or NVIDIA CUDA build, follow the [PyTorch installation instructions](https://pytorch.org/get-started/locally/) for the matching versions and hardware. The environment check reports whether CUDA is available; the code can also run on CPU, although training will be slower.
 
 ## Usage
 
@@ -141,7 +140,7 @@ Prepare the datasets:
 python scripts/prepare_data.py
 ```
 
-Open JupyterLab and run the notebooks in numerical order:
+Open JupyterLab from the repository root and run the notebooks in numerical order (`01_data_exploration.ipynb` through `05_model_comparison.ipynb`):
 
 ```bash
 jupyter lab
