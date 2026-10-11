@@ -1,76 +1,168 @@
 # VAE and Diffusion Models on MNIST and Fashion-MNIST
 
-A comparison of three generative approaches for 28 × 28 grayscale images: a convolutional variational autoencoder (VAE), an unconditional denoising diffusion probabilistic model (DDPM), and a class-conditional DDPM. The experiments use MNIST and Fashion-MNIST to examine sample appearance, generation speed, and the effect of class conditioning.
+This project compares three generative models for 28 × 28 grayscale images: a convolutional Variational Autoencoder (VAE), an unconditional Denoising Diffusion Probabilistic Model (DDPM), and a class-conditional DDPM. The experiments use MNIST and Fashion-MNIST to examine generated samples, sampling time, and the effect of class conditioning.
 
-## Project overview
+The conditional DDPM achieved **98% classifier agreement on MNIST** and **90% on Fashion-MNIST**, based on 200 generated images per dataset. These scores measure agreement with an evaluation classifier, not image realism or independently verified generation accuracy.
 
-The project starts with dataset exploration and a VAE baseline, then trains an unconditional diffusion model and extends it with class labels and classifier-free guidance. The final notebook compares generated samples, sampling time, and agreement between requested labels and predictions from an evaluation classifier.
+## Project Overview
 
-## Methods
+The project starts with data exploration and a VAE baseline, then trains an unconditional diffusion model and extends it with class conditioning and classifier-free guidance. The final notebook compares the models using saved training metrics, generated images, sampling time, and classifier-based class agreement.
 
-- **VAE:** A convolutional encoder learns a latent distribution, and a decoder reconstructs or generates images. Latent dimensions of 2 and 20 are evaluated.
-- **Unconditional DDPM:** A small U-Net predicts noise added at randomly sampled diffusion steps. New images are generated through iterative denoising from Gaussian noise.
-- **Conditional DDPM:** Class embeddings are added to the noise predictor. Classifier-free guidance allows generation to be directed toward a requested digit or clothing category.
+The models and training utilities are implemented in PyTorch, with each experiment documented in a separate notebook.
 
-Both datasets use consistent train/validation splits across experiments. The model architectures and training utilities are implemented in `src/`, while notebooks document the experiments and their outputs.
+## Dataset
+
+Two standard image datasets are used:
+
+| Dataset | Images | Classes | Resolution |
+|---|---|---:|---|
+| MNIST | Handwritten digits | 10 | 28 × 28, grayscale |
+| Fashion-MNIST | Clothing and footwear | 10 | 28 × 28, grayscale |
+
+The same dataset preparation procedure and train/validation splits are used across experiments. Downloaded data are not included in the repository; `scripts/prepare_data.py` prepares the datasets locally.
+
+## Methodology
+
+### Generative models
+
+- **Convolutional VAE:** An encoder maps images to a latent distribution, and a decoder reconstructs images or generates new samples from latent vectors. Latent dimensions of **2** and **20** are evaluated.
+- **Unconditional DDPM:** A noise-prediction network learns to reverse a gradual noising process. Images are sampled through multiple denoising steps, starting from Gaussian noise.
+- **Conditional DDPM:** Class information is included in the noise predictor, allowing specific digits or clothing categories to be requested. Classifier-free guidance is used during sampling.
+
+### Experiment workflow
+
+```text
+MNIST / Fashion-MNIST
+         ↓
+Data exploration and preparation
+         ↓
+VAE → Unconditional DDPM → Conditional DDPM
+         ↓
+Saved checkpoints, figures, and training metrics
+         ↓
+Sample comparison, timing, and class-consistency evaluation
+```
+
+The experiments are organized in five notebooks, from dataset exploration to the final model comparison. Model definitions and training code are kept separately in `src/`.
 
 ## Results
 
-| Model | MNIST best validation loss | Fashion-MNIST best validation loss |
-| --- | ---: | ---: |
+### Validation losses
+
+| Model | MNIST | Fashion-MNIST |
+|---|---:|---:|
 | VAE, latent dimension 2 | 144.49 | 257.45 |
 | VAE, latent dimension 20 | 97.07 | 235.60 |
 | Unconditional DDPM | 0.03973 | 0.06933 |
 | Conditional DDPM | 0.03953 | 0.07028 |
 
-**Note:** VAE losses combine reconstruction and KL-divergence terms, whereas DDPM losses measure noise-prediction error. These values should not be compared directly across model families.
+The VAE objective combines reconstruction and KL-divergence terms, while the DDPM objective measures noise-prediction error. **Loss values should not be compared directly between these model families.** The two diffusion variants achieved similar validation losses.
 
-The VAE generated images substantially faster than the diffusion models in the recorded batch benchmark. The diffusion samples generally showed more defined structures, although some examples remained ambiguous. Class conditioning allowed categories to be requested explicitly.
+### Generated samples
 
-For the conditional DDPM, an evaluation classifier agreed with the requested class for **98% of MNIST** and **90% of Fashion-MNIST** generated samples (200 images per dataset). The evaluation classifiers achieved **98.59%** and **87.49%** test accuracy, respectively. These are classifier-based agreement scores, not independent measurements of realism or generation accuracy.
+![Generated samples from the VAE and diffusion models](results/figures/model_comparison/generated_samples_comparison.png)
 
-### Generated-image comparison
+The VAE tends to produce smoother samples, while the diffusion models generally show more defined structures, although some images remain ambiguous. The conditional model allows the requested class to be specified.
 
-![Generated samples from the three models](results/figures/model_comparison/generated_samples_comparison.png)
+### Sampling time
 
-> If the comparison figure has a different filename locally, update the image path above to match the file in `results/figures/model_comparison/`.
+The following measurements were recorded for batches of eight MNIST images:
 
-## Repository structure
+| Model | Median time per batch |
+|---|---:|
+| VAE (latent dimension 20) | 0.0004 s |
+| Unconditional DDPM | 0.6950 s |
+| Conditional DDPM | 1.1163 s |
+
+The VAE requires a single decoder pass, whereas diffusion models perform multiple denoising steps. The conditional model also incurs additional computation from classifier-free guidance. Times depend on the hardware and sampling configuration.
+
+### Class consistency
+
+An evaluation classifier was used to check whether conditional samples matched their requested categories. Each dataset was evaluated using **20 generated samples per class** (200 images total).
+
+| Dataset | Classifier agreement | Classifier test accuracy |
+|---|---:|---:|
+| MNIST | **98%** | 98.59% |
+| Fashion-MNIST | **90%** | 87.49% |
+
+Fashion-MNIST showed greater variation between classes; **Coat** had the lowest agreement at **60%**. These measurements depend on the evaluation classifier and do not directly measure image realism or diversity.
+
+## Repository Structure
 
 ```text
-notebooks/
-  01_data_exploration.ipynb
-  02_vae.ipynb
-  03_diffusion.ipynb
-  04_conditional_diffusion.ipynb
-  05_model_comparison.ipynb
-src/                  # Model definitions and training utilities
-scripts/              # Environment checks and data preparation
-results/
-  figures/             # Saved visualizations
-  metrics/             # Experiment summaries and evaluation tables
-environment.yml
-requirements.txt
-README.md
+vae-diffusion/
+├── notebooks/
+│   ├── 01_data_exploration.ipynb
+│   ├── 02_vae.ipynb
+│   ├── 03_diffusion.ipynb
+│   ├── 04_conditional_diffusion.ipynb
+│   └── 05_model_comparison.ipynb
+├── src/
+│   ├── models.py
+│   ├── training.py
+│   ├── diffusion.py
+│   ├── diffusion_training.py
+│   ├── conditional_diffusion.py
+│   └── conditional_training.py
+├── scripts/
+│   ├── check_environment.py
+│   └── prepare_data.py
+├── results/
+│   ├── figures/
+│   └── metrics/
+├── environment.yml
+├── requirements.txt
+└── README.md
 ```
 
-## Setup and usage
+Model checkpoints and downloaded datasets are excluded from Git. Experiment figures and evaluation metrics are retained.
 
-From the repository root, create the Conda environment using the provided configuration:
+## Installation
+
+Clone the repository and create the Conda environment:
 
 ```bash
+git clone https://github.com/StefanoMeAn/vae-diffusion.git
+cd vae-diffusion
 conda env create -f environment.yml
 ```
 
-Activate the environment named in `environment.yml`, then prepare the data:
+Activate the environment defined in `environment.yml`, then verify the installation:
 
 ```bash
 python scripts/check_environment.py
+```
+
+## Usage
+
+Prepare the datasets:
+
+```bash
 python scripts/prepare_data.py
 ```
 
-Open the notebooks in numerical order, starting with `01_data_exploration.ipynb`. The training notebooks save model checkpoints locally; `05_model_comparison.ipynb` expects those checkpoints to be available. Trained weights and downloaded datasets are excluded from version control, while figures and metrics are retained.
+Open JupyterLab and run the notebooks in numerical order:
 
-## Limitations
+```bash
+jupyter lab
+```
 
-The experiments use small architectures, 28 × 28 grayscale images, and a single random seed. Sample appearance was assessed visually, and class consistency was estimated using a classifier rather than a distribution-level metric such as FID. The findings describe these particular implementations and training settings rather than a general ranking of generative models.
+The VAE and diffusion training notebooks save checkpoints locally. The final comparison notebook requires these checkpoints to load the trained models and regenerate samples. Previously saved metrics and figures are available in `results/` without retraining.
+
+## Limitations and Future Work
+
+- The experiments use small networks and 28 × 28 grayscale images; results may differ for higher-resolution datasets.
+- Only one training seed was used, so variability across independent runs was not assessed.
+- Visual inspection and classifier agreement do not fully characterize sample quality or diversity.
+- Distribution-level metrics such as FID could provide an additional comparison, with appropriate care for small grayscale images.
+- Larger architectures and alternative diffusion sampling schedules could be explored to study quality and generation speed.
+
+## Technologies
+
+Python · PyTorch · torchvision · NumPy · pandas · Matplotlib · Jupyter · Conda · CUDA
+
+## Author
+
+**Stefano Meza** — Physicist with a Master’s degree in Physics of Data from the University of Padova, interested in machine learning, deep learning, computer vision, NLP, and scientific computing.
+
+[LinkedIn](https://www.linkedin.com/in/stefanomean/) · [GitHub](https://github.com/StefanoMeAn)
