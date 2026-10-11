@@ -1,0 +1,21 @@
+dataset,requested_class,class_name,agreement,classifier_test_accuracy,n_samples
+mnist,0,0,1.0,0.9859,20
+mnist,1,1,1.0,0.9859,20
+mnist,2,2,0.95,0.9859,20
+mnist,3,3,1.0,0.9859,20
+mnist,4,4,1.0,0.9859,20
+mnist,5,5,1.0,0.9859,20
+mnist,6,6,0.95,0.9859,20
+mnist,7,7,0.9,0.9859,20
+mnist,8,8,1.0,0.9859,20
+mnist,9,9,1.0,0.9859,20
+fashion_mnist,0,T-shirt/top,1.0,0.8749,20
+fashion_mnist,1,Trouser,0.8,0.8749,20
+fashion_mnist,2,Pullover,0.95,0.8749,20
+fashion_mnist,3,Dress,0.85,0.8749,20
+fashion_mnist,4,Coat,0.6,0.8749,20
+fashion_mnist,5,Sandal,0.95,0.8749,20
+fashion_mnist,6,Shirt,0.95,0.8749,20
+fashion_mnist,7,Sneaker,0.9,0.8749,20
+fashion_mnist,8,Bag,1.0,0.8749,20
+fashion_mnist,9,Ankle boot,1.0,0.8749,20
